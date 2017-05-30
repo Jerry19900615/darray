@@ -1,14 +1,13 @@
 
-CFLAGS ?= -g
+CFLAGS ?= -g -O3
+OBJECTS ?= test.o darray.o
 
-main: main.o darray.o
-	gcc $(CLFAGS) -o main main.o darray.o
-main.o: main.c darray.h
-	gcc $(CFLAGS) -c main.c -o main.o
+test: $(OBJECTS)
+	gcc $(CLFAGS) -o test $(OBJECTS)
 
-darray.o: darray.c darray.h
-	gcc $(CFLAGS) -c darray.c -o darray.o
+$(OBJECTS): %.o: %.c
+	gcc $(CFLAGS) -o $@ -c $<
 
 .PHONY: clean
 clean:
-	rm *.o main
+	rm $(OBJECTS) test
