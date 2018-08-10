@@ -51,7 +51,7 @@ void darray_free_ex(darray_t *parr, void(*pfunc)(void*));
  *description: 增加元素到数组尾部
  *param:
  *	darray_t *parr,     // the array to append data to
- *	void *data          // the data to be appended 元素内存需要调用着申请，由darray_free_ex负责释放
+ *	void *data          // the data to be appended 元素内存需要调用者申请，由darray_free_ex负责释放
  *return:
  *  成功返回 DARR_ERROR_OK， 失败返回DARR_ERROR_FAIL
  */
@@ -64,7 +64,7 @@ int darray_append(darray_t *parr, void *data);
  *param:
  *	darray_t *parr,     // the array to append data to
  *	int index,          // the index to insert
- *	void *data          // the data to be appended 元素内存需要调用着申请，由darray_free_ex负责释放
+ *	void *data          // the data to be appended 元素内存需要调用者申请，由darray_free_ex负责释放
  *return:
  *  成功返回 DARR_ERROR_OK， 失败返回DARR_ERROR_FAIL
  */

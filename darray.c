@@ -7,8 +7,9 @@
 
 struct darray_t_{
 	unsigned int capacity;  //容量
-	int curr;      //当前元素个数
+	unsigned int curr;      //当前元素个数
 	void **data;   //元素指针数组
+//多线程支持，加个锁
 };
 
 #define AUTO_EXPEND_SIZE 20
@@ -34,7 +35,7 @@ static int autoexpending(darray_t *parr)
 darray_t *darray_init(){
 	darray_t *parr;
 	parr = (darray_t*)malloc(sizeof(darray_t));
-	if(!parr){ 
+	if(parr){ 
 		parr->capacity = 0;
 		parr->curr = 0;
 		parr->data = 0;

@@ -3,90 +3,122 @@
 #include <string.h>
 #include "darray.h"
 
-struct aaaa{
+typedef struct T{
 	int a;
 	short b;
 	char *name;
-};
+}T;
 
-void free_aaaa(void *ps){
-	struct aaaa *p = (struct aaaa*)ps;
-	if(p->name) free(p->name);
-	free(ps);
+T *new_T(){
+	T *new_t;
+	new_t = (T*)malloc(sizeof(T));
+	return new_t;
+}
+
+void free_T(T *pt){
+	if(pt){
+		if(pt->name) free(pt->name);
+		free(pt);
+	}
 }
 
 int main(int argc, char **argv){
 
-	struct aaaa *s;	
-	struct aaaa *pout;
+	T *s;	
 	int i;
 
 	darray_t *array;
-
+	printf("Create empty array.\n");
 	array = darray_init();
 	if(array == NULL)
 	{
 		printf("error\n");
-		return 1;
+		return -1;
 	}
 
-	s = (struct aaaa*)malloc(sizeof(struct aaaa));
+	s = new_T();
+	if(!s){
+		printf("error\n");
+		return -1;
+	}
 	s->a = 10;
 	s->b = 11;
 	s->name = strdup("hello");
 
+	printf("append element name:%s.\n", s->name);
 	darray_append(array, s);
 
-	s = (struct aaaa*)malloc(sizeof(struct aaaa));
+	s = new_T();
+	if(!s){
+		printf("error\n");
+		return -1;
+	}
 	s->a = 30;
 	s->b = 40;
 	s->name = strdup("abc");
+	printf("append element name:%s.\n", s->name);
 	darray_append(array, s);
 
-
+	
+	printf("\n\nNow elements in array are:\n");
 	for(i = 0; i < darray_count(array); i ++)
 	{
-		pout = darray_get_element(array, i);
-		printf("a = %d, b = %d, name= %s\n", pout->a, pout->b, pout->name);
+		s = darray_get_element(array, i);
+		printf("a = %d, b = %d, name= %s\n",s->a, s->b, s->name);
 	}
 	printf("\n");
 
-	s = (struct aaaa*) malloc(sizeof(struct aaaa));
+	s = new_T();
+	if(!s){
+		printf("error\n");
+		return -1;
+	}
 	s->a = 52;
 	s->b = 44;
 	s->name = strdup("world");
+	
+	printf("insert element name:%s in index 1.\n", s->name);
 	darray_insert(array, 1, s);
 
+
+	printf("\n\nNow elements in array are:\n");
 	for(i = 0; i < darray_count(array); i ++)
 	{
-		pout = darray_get_element(array, i);
-		printf("a = %d, b = %d, name= %s\n", pout->a, pout->b, pout->name);
+		s = darray_get_element(array, i);
+		printf("a = %d, b = %d, name= %s\n", s->a, s->b, s->name);
 	}
 	printf("\n");
-	
-	pout = darray_delete(array, 2);
 
-	printf("a = %d, b = %d, name= %s\n\n", pout->a, pout->b, pout->name);
 
-	free_aaaa(pout);
+	printf("delete element of index 2.\n");
+	s = darray_delete(array, 2);
 
+
+	free_T(s);
+
+	printf("\n\nNow elements in array are:\n");
 	for(i = 0; i < darray_count(array); i ++)
 	{
-		pout = darray_get_element(array, i);
-		printf("a = %d, b = %d, name= %s\n", pout->a, pout->b, pout->name);
+		s = darray_get_element(array, i);
+		printf("a = %d, b = %d, name= %s\n", s->a, s->b, s->name);
 	}
 
 	printf("\n");
-	pout = darray_delete(array, 0);
-	printf("a = %d, b = %d, name= %s\n\n", pout->a, pout->b, pout->name);
-	free_aaaa(pout);
+
+	printf("delete element of index 0.\n");
+	s = darray_delete(array, 0);
+	free_T(s);
+
+	printf("\n\nNow elements in array are:\n");
 	for(i = 0; i < darray_count(array); i ++)
 	{
-		pout = darray_get_element(array, i);
-		printf("a = %d, b = %d, name= %s\n", pout->a, pout->b, pout->name);
+		s = darray_get_element(array, i);
+		printf("a = %d, b = %d, name= %s\n", s->a, s->b, s->name);
 	}
-	
-	darray_free_ex(array, free_aaaa);
+
+
+	printf("free array\n");
+	darray_free_ex(array, (void(*)(void*))free_T);
 
 	return 0;
 }

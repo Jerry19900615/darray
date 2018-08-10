@@ -8,6 +8,9 @@ test: $(OBJECTS)
 $(OBJECTS): %.o: %.c
 	gcc $(CFLAGS) -o $@ -c $<
 
-.PHONY: clean
+tags:
+	gtags 
+
+.PHONY: clean test tags
 clean:
 	rm $(OBJECTS) test
